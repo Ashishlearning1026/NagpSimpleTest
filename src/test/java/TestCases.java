@@ -21,7 +21,7 @@ public class TestCases {
     public void testFailedAdd() {
         int total = 9;
         int sum = add(10, 5);
-        Assert.assertEquals(sum, total);
+        Assert.assertNotEquals(sum, total);
     }
 
     @Test

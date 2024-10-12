@@ -1,0 +1,75 @@
+pipeline{
+    agent any
+    tools{
+        maven 'MAVEN_HOME'
+    }
+    
+    stages{
+    stage ('checkout')
+		{
+			steps
+			{
+				checkout scm
+			}
+		}
+		stage ('Build')
+		{
+			steps
+			{
+				bat "mvn install"
+			}
+		}
+		stage ('Unit Testing')
+		{
+			steps
+			{
+				bat "mvn test"
+			}
+		}
+		stage ('Sonar Analysis')
+		{
+			steps
+			{
+				withSonarQubeEnv(installationName: 'Sonar_Test')
+				{
+					bat "mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.1.2184:sonar"
+				}
+			}
+		}
+	stage("Quality Gate") {
+            steps {
+                timeout(time: 1, unit: 'HOURS') {
+                    // Parameter indicates whether to set pipeline to UNSTABLE if Quality Gate fails
+                    // true = set pipeline to UNSTABLE, false = don't
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
+		stage ('Upload to Artifactory')
+		{
+			steps
+			{
+				rtMavenDeployer (
+                    id: 'deployer',
+                    serverId: 'Artifactory',
+                    releaseRepo: 'ashish.nagp',
+                    snapshotRepo: 'ashish.nagp'
+                )
+                rtMavenRun (
+                    pom: 'pom.xml',
+                    goals: 'clean install',
+                    deployerId: 'deployer',
+                )
+                rtPublishBuildInfo (
+                    serverId: 'Artifactory',
+                )
+			}
+		}
+    }
+    post{
+        success{
+            bat "echo success"
+        }
+    }
+    
+}

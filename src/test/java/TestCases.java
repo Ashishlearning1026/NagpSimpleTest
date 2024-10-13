@@ -20,7 +20,7 @@ public class TestCases {
 
     @Test
     public void testForCheckInTest() {
-        int total = 9;
+        int total = 10;
         int sum = add(10, 5);
         System.out.println("Verifying the second test case");
         Assert.assertNotEquals(sum, total);

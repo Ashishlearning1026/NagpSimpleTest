@@ -1,17 +1,24 @@
+// Pipeline is divided for the stages for checkout and then for build and then for testing
+// pipeline also includes the quality check and if quality check fails the buld will be marked fail
+// At last artifacts are uploaded to jfrog artifactory
+
 pipeline{
     agent any
     tools{
+    //adding the maven environment variable used in jenkins configuration
         maven 'MAVEN_HOME'
     }
     
     stages{
     stage ('checkout')
 		{
+		//adding step for checking out from git
 			steps
 			{
 				checkout scm
 			}
 		}
+		//stage for building the project
 		stage ('Build')
 		{
 			steps
@@ -19,6 +26,7 @@ pipeline{
 				bat "mvn install"
 			}
 		}
+		//final step for maven repo to test the application
 		stage ('Unit Testing')
 		{
 			steps
@@ -26,6 +34,8 @@ pipeline{
 				bat "mvn test"
 			}
 		}
+
+		//This stage is for sonar analysis
 		stage ('Sonar Analysis')
 		{
 			steps
@@ -36,6 +46,7 @@ pipeline{
 				}
 			}
 		}
+
 	stage("Quality Gate") {
             steps {
                 timeout(time: 1, unit: 'HOURS') {
@@ -45,6 +56,8 @@ pipeline{
                 }
             }
         }
+
+        //snippet for the snapshot upload to the Jfrog
 		stage ('Upload to Artifactory')
 		{
 			steps
@@ -66,6 +79,8 @@ pipeline{
 			}
 		}
     }
+
+    //once all steps are done the console will print success
     post{
         success{
             bat "echo success"

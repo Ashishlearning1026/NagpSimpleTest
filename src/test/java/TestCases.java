@@ -14,6 +14,7 @@ public class TestCases {
     public void testAdd() {
         int total = 8;
         int sum = add(4, 4);
+        System.out.println("Verifying the first test case");
         Assert.assertEquals(sum, total);
     }
 
@@ -21,6 +22,7 @@ public class TestCases {
     public void testFailedAdd() {
         int total = 9;
         int sum = add(10, 5);
+        System.out.println("Verifying the second test case");
         Assert.assertNotEquals(sum, total);
     }
 
@@ -28,6 +30,7 @@ public class TestCases {
     public void testSub() {
         int total = 0;
         int sub = sub(4, 4);
+        System.out.println("Verifying the third test case");
         Assert.assertEquals(sub, total);
     }
 }

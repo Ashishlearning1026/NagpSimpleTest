@@ -19,7 +19,7 @@ public class TestCases {
     }
 
     @Test
-    public void testFailedAdd() {
+    public void testForCheckInTest() {
         int total = 9;
         int sum = add(10, 5);
         System.out.println("Verifying the second test case");

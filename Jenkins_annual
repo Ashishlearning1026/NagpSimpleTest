@@ -44,3 +44,4 @@ stage ('Publish build info') {
             }
   }
 }
+}

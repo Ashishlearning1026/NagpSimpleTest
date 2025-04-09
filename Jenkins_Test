@@ -39,8 +39,8 @@ stage('Artifactory Upload') {
                 rtMavenDeployer (
                     id: "MAVEN_DEPLOYER",
                     serverId: "ARTIFACTORY_SERVER",
-                    releaseRepo: ARTIFACTORY_LOCAL_RELEASE_REPO,
-                    snapshotRepo: ARTIFACTORY_LOCAL_SNAPSHOT_REPO
+                    releaseRepo: 'justcheck.repo',
+                    snapshotRepo: 'justcheck.repo'
                 )
 rtMavenRun (
                     pom: 'pom.xml',

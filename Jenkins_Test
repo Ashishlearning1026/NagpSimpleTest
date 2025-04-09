@@ -33,5 +33,25 @@ tools{maven 'MAVEN_HOME'}
               }
             }
           }
+
+stage('Artifactory Upload') {
+        steps{
+                rtMavenDeployer (
+                    id: "MAVEN_DEPLOYER",
+                    serverId: "ARTIFACTORY_SERVER",
+                    releaseRepo: ARTIFACTORY_LOCAL_RELEASE_REPO,
+                    snapshotRepo: ARTIFACTORY_LOCAL_SNAPSHOT_REPO
+                )
+rtMavenRun (
+                    pom: 'pom.xml',
+                    goals: 'clean install',
+                    deployerId: "MAVEN_DEPLOYER",
+                )
+rtPublishBuildInfo (
+                    serverId: "ARTIFACTORY_SERVER"
+                )
+            }
+        }
+
     }
 }

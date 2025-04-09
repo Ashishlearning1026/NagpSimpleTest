@@ -4,7 +4,7 @@ tools {maven "MAVEN_HOME"}
 stages {
     stage('checkout')
     {
-	Steps{
+	steps{
       checkout scm
 	  }
     }
@@ -14,9 +14,9 @@ stages {
       bat 'mvn clean install'
 	  }
     }
-    stage('Aonar Qube anaysis')
+    stage('Sonar Qube anaysis')
     {
-	Steps{
+	steps{
 	withSonarQubeEnv('Test_Sonar') {bat 'mvn sonar:sonar'}
 	} 
     }

@@ -1,0 +1,26 @@
+Pipeline{
+agent any
+tools {maven: 'MAVEN_HOME'}
+Stage{
+    stage('checkout')
+    {
+	Steps{
+      checkout scm
+	  }
+    }
+    stage('test run')
+    {
+	steps{
+      bat 'mvn clean install'
+	  }
+    }
+    stage('Aonar Qube anaysis')
+    {
+	Steps{
+	withSonarQubeEnv('') {
+                bat 'mvn sonar:sonar'
+        }
+	} 
+    }
+	}
+}

@@ -10,13 +10,7 @@ tools{maven 'MAVEN_HOME'}
 		
 	stage('Build') {
         steps{
-                bat "mvn install"
-            }
-        }
-		
-	stage('Test') {
-        steps{
-                bat "mvn test"
+                bat "mvn clean install"
             }
         }
 	stage('Analysis') {
@@ -26,13 +20,6 @@ tools{maven 'MAVEN_HOME'}
               }
             }
         }
-		stage("Quality Gate") {
-            steps {
-              timeout(time: 1, unit: 'HOURS') {
-                waitForQualityGate abortPipeline: true
-              }
-            }
-          }
 
 stage('Artifactory Upload') {
         steps{

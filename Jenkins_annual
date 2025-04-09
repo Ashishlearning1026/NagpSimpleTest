@@ -20,5 +20,27 @@ stages {
 	withSonarQubeEnv('Test_Sonar') {bat 'mvn sonar:sonar'}
 	} 
     }
+    stage('Artifactory Upload')
+    {
+	steps{
+	rtMavenDeployer (
+                    id: "MAVEN_DEPLOYER",
+                    serverId: "ARTIFACTORY_SERVER",
+                    releaseRepo: 'NAGP.Annual',
+                    snapshotRepo: 'NAGP.Annual'
+                )
+	rtMavenRun (
+                    pom: 'pom.xml',
+                    goals: 'clean install',
+                    deployerId: "MAVEN_DEPLOYER"
+                )
+	} 
+    }
+stage ('Publish build info') {
+            steps {
+                rtPublishBuildInfo (
+                    serverId: "ARTIFACTORY_SERVER"
+                )
+            }
   }
 }
